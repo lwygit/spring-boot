@@ -1,0 +1,12 @@
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    timezone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+
+logging:
+  file: target/app.log
+  level:
+    ROOT: ERROR
+    cn.example: TRACE
