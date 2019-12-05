@@ -9,4 +9,4 @@ logging:
   file: target/app.log
   level:
     ROOT: ERROR
-    cn.example: TRACE
+    com.example: TRACE
