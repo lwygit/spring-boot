@@ -3,10 +3,7 @@ package com.example.demo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -31,7 +28,7 @@ public class TVSeriesController {
     @GetMapping("/{id}")
     public TVSeriesDto getOne(@PathVariable int id) {
         if (log.isTraceEnabled()) {
-            log.trace("getOne()" + id);
+            log.trace("getOne() id=" + id);
         }
         if (id == 101) {
             return createWestWorld();
@@ -54,6 +51,15 @@ public class TVSeriesController {
         Calendar c = Calendar.getInstance();
         c.set(2016, Calendar.OCTOBER, 22, 0, 0, 0);
         return new TVSeriesDto(102, "poi", 5, c.getTime());
+    }
+
+    @PostMapping
+    public TVSeriesDto insertOne(@RequestBody TVSeriesDto tvSeriesDto) {
+        if (log.isTraceEnabled()) {
+            log.trace("新增的数据"+tvSeriesDto);
+        }
+        tvSeriesDto.setId(9999);
+        return tvSeriesDto;
     }
 
 

@@ -50,4 +50,9 @@ public class TVSeriesDto {
     public void setOriginRelease(Date originRelease) {
         this.originRelease = originRelease;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getName()+"{id= "+id +";name="+name +"}";
+    }
 }
