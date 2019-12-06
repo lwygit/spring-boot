@@ -3,8 +3,10 @@ package com.example.demo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
@@ -56,11 +58,39 @@ public class TVSeriesController {
     @PostMapping
     public TVSeriesDto insertOne(@RequestBody TVSeriesDto tvSeriesDto) {
         if (log.isTraceEnabled()) {
-            log.trace("新增的数据"+tvSeriesDto);
+            log.trace("新增的数据" + tvSeriesDto);
         }
-        tvSeriesDto.setId(9999);
+        tvSeriesDto.setId(12);
         return tvSeriesDto;
     }
 
+    @PutMapping("/{id}")
+    public TVSeriesDto updateOne(@PathVariable int id, @RequestBody TVSeriesDto tvSeriesDto) {
+        if (log.isTraceEnabled()) {
+            log.trace("更新的数据" + tvSeriesDto);
+        }
+        if (id == 101 || id == 102) {
+            return createPoi();
+        } else {
+            throw new ResourceNotFoundException();
+        }
 
+    }
+
+    @DeleteMapping("/{id}")
+    public Map<String, String> DeleteOne(@PathVariable int id, HttpServletRequest request,
+                                         @RequestParam(value = "delete_reason", required = false) String deleteReason) throws Exception {
+        Map<String, String> result = new HashMap();
+        if (log.isTraceEnabled()) {
+            log.trace("删除的数据" + id);
+        }
+        if (id == 101) {
+            result.put("message", "#101被" + request.getRemoteAddr() + "删除（原因：" + deleteReason + ")");
+        } else if (id == 102) {
+            throw new RuntimeException("#102不能被删除");
+        } else {
+            throw new ResourceNotFoundException();
+        }
+        return result;
+    }
 }
