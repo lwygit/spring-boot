@@ -2,11 +2,19 @@ package com.example.demo;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.apache.commons.io.IOUtils;
+//import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.*;
 
 @RestController
@@ -93,4 +101,25 @@ public class TVSeriesController {
         }
         return result;
     }
+
+    @PostMapping(value = "/{id}/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void addPhoto(@PathVariable int id, @RequestParam("photo") MultipartFile imgFile) throws Exception {
+        if (log.isTraceEnabled()) {
+            log.trace("接收的文件" + id + "收到的文件" + imgFile.getOriginalFilename());
+        }
+        FileOutputStream fos = new FileOutputStream("target/" + imgFile.getOriginalFilename());
+        IOUtils.copy(imgFile.getInputStream(), fos);
+        fos.close();
+    }
+
+    @GetMapping(value="/{id}/icon",produces=MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getIcon(@PathVariable int id) throws Exception {
+        if(log.isTraceEnabled()) {
+            log.trace("getIcon("+id+")");
+        }
+        String iconFile = "poi.jpg";
+        InputStream is = new FileInputStream(iconFile);
+        return IOUtils.toByteArray(is);
+    }
+
 }
